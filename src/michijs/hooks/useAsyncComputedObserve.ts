@@ -24,11 +24,14 @@ export const useAsyncComputedObserve: UseAsyncComputedObserve = (
     try {
       // Should cancel any update before the last call
       cancellablePromise?.cancel();
-      cancellablePromise = new CancellablePromise(callback(), (callbackResult) => {
-        options?.onBeforeUpdate?.();
-        (newObservable as ObservableType<object>)(callbackResult as object);
-        options?.onAfterUpdate?.();
-      })
+      cancellablePromise = new CancellablePromise(
+        callback(),
+        (callbackResult) => {
+          options?.onBeforeUpdate?.();
+          (newObservable as ObservableType<object>)(callbackResult as object);
+          options?.onAfterUpdate?.();
+        },
+      );
     } catch (ex) {
       console.error(ex);
     }
